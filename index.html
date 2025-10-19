@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Photo Viewer</title>
+<style>
+  body {
+    margin: 0;
+    background-color: #222; /* dark grey background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #eee;
+  }
+  #viewer {
+    max-width: 90vw;
+    max-height: 90vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    user-select: none;
+  }
+  button {
+    background: none;
+    border: none;
+    color: #eee;
+    font-size: 2.5rem;
+    cursor: pointer;
+    padding: 0 20px;
+    opacity: 0.75;
+    transition: opacity 0.3s ease;
+    user-select: none;
+  }
+  button:hover {
+    opacity: 1;
+  }
+  button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+  @media (max-width: 600px) {
+    button {
+      font-size: 1.8rem;
+      padding: 0 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="viewer">
+  <button id="prevBtn" aria-label="Previous Photo" disabled>&#8592;</button>
+  <img id="photo" src="" alt="Photo viewer image" />
+  <button id="nextBtn" aria-label="Next Photo">&#8594;</button>
+</div>
+
+<script>
+  const images = [
+    "alps0001.jpg","alps0002.jpg","alps0003.jpg","alps0004.jpg","alps0005.jpg",
+    "alps0006.jpg","alps0007.jpg","alps0008.jpg","alps0009.jpg","alps0010.jpg",
+    "alps0011.jpg","alps0012.jpg","alps0013.jpg","alps0014.jpg","alps0015.jpg",
+    "alps0016.jpg","alps0017.jpg","alps0018.jpg","alps0019.jpg","alps0020.jpg",
+    "alps0021.jpg","alps0022.jpg","alps0023.jpg","alps0024.jpg","alps0025.jpg",
+    "alps0026.jpg","alps0027.jpg","alps0028.jpg","alps0029.jpg","alps0030.jpg",
+    "alps0031.jpg","alps0032.jpg","alps0033.jpg","alps0034.jpg","alps0035.jpg",
+    "alps0036.jpg","alps0037.jpg","alps0038.jpg","alps0039.jpg","alps0040.jpg",
+    "alps0041.jpg","alps0042.jpg","alps0043.jpg","alps0044.jpg","alps0045.jpg",
+    "alps0046.jpg","alps0047.jpg","alps0048.jpg","alps0049.jpg","alps0050.jpg",
+    "alps0051.jpg","alps0052.jpg","alps0053.jpg","alps0054.jpg","alps0055.jpg",
+    "alps0056.jpg","alps0057.jpg","alps0058.jpg","alps0059.jpg","alps0060.jpg",
+    "alps0061.jpg","alps0062.jpg","alps0063.jpg","alps0064.jpg","alps0065.jpg",
+    "alps0066.jpg","alps0067.jpg","alps0068.jpg","alps0069.jpg","alps0070.jpg",
+    "alps0071.jpg","alps0072.jpg","alps0073.jpg","alps0074.jpg","alps0075.jpg",
+    "alps0076.jpg","alps0077.jpg","alps0078.jpg","alps0079.jpg","alps0080.jpg",
+    "alps0081.jpg","alps0082.jpg","alps0083.jpg","alps0084.jpg","alps0085.jpg",
+    "alps0086.jpg","alps0087.jpg","alps0088.jpg","alps0089.jpg","alps0090.jpg",
+    "alps0091.jpg","alps0092.jpg","alps0093.jpg","alps0094.jpg","alps0095.jpg",
+    "alps0096.jpg","alps0097.jpg","alps0098.jpg","alps0099.jpg","alps0100.jpg",
+    "alps0101.jpg","alps0102.jpg","alps0103.jpg","alps0104.jpg","alps0105.jpg",
+    "alps0106.jpg","alps0107.jpg","alps0108.jpg","alps0109.jpg","alps0110.jpg",
+    "alps0111.jpg","alps0112.jpg","alps0113.jpg","alps0114.jpg","alps0115.jpg",
+    "alps0116.jpg","alps0117.jpg","alps0118.jpg","alps0119.jpg","alps0120.jpg",
+    "alps0121.jpg","alps0122.jpg","alps0123.jpg","alps0124.jpg","alps0125.jpg",
+    "alps0126.jpg","alps0127.jpg","alps0128.jpg"
+  ];
+
+  let currentIndex = 0;
+  const photoElem = document.getElementById('photo');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  // Show image at currentIndex
+  function showImage(index) {
+    photoElem.src = `images/${images[index]}`;
+    photoElem.alt = `Photo ${index + 1} of ${images.length}`;
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === images.length - 1;
+  }
+
+  // Preload images in the background except the first one which loads immediately
+  function preloadImages() {
+    for(let i = 1; i < images.length; i++) {
+      const img = new Image();
+      img.src = images[i];
+    }
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      showImage(currentIndex);
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (currentIndex < images.length - 1) {
+      currentIndex++;
+      showImage(currentIndex);
+    }
+  });
+
+  // Start by showing the first image immediately
+  showImage(currentIndex);
+
+  // Preload all remaining images after first is shown
+  window.onload = preloadImages;
+</script>
+
+</body>
+</html>
